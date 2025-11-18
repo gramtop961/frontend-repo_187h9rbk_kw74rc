@@ -21,10 +21,15 @@ function useAuth() {
   return auth
 }
 
-function Card({ children }) {
+function Card({ children, img }) {
   return (
-    <div className="p-4 rounded-lg border border-slate-200 dark:border-slate-700 bg-white/60 dark:bg-slate-900/60">
-      {children}
+    <div className="p-0 rounded-lg border border-slate-200 dark:border-slate-700 bg-white/60 dark:bg-slate-900/60 overflow-hidden">
+      {img && (
+        <img src={img} alt="" className="w-full h-36 object-cover" loading="lazy" />
+      )}
+      <div className="p-4">
+        {children}
+      </div>
     </div>
   )
 }
@@ -73,12 +78,17 @@ export function TrendingRecipes() {
   useEffect(() => {
     fetch(`${baseUrl}/recipes/trending`).then(r=>r.json()).then(d=>setItems(Array.isArray(d)?d:[])).catch(()=>{})
   }, [])
+  const placeholders = [
+    'https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1200&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1540420773420-3366772f4999?q=80&w=1200&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1526318472351-c75fcf070305?q=80&w=1200&auto=format&fit=crop',
+  ]
   return (
     <section className="max-w-6xl mx-auto px-4 py-12">
       <h2 className="text-2xl font-semibold text-slate-900 dark:text-white">Trending recipes</h2>
       <Grid>
-        {items.map((r) => (
-          <Card key={r.id}>
+        {items.map((r, idx) => (
+          <Card key={r.id} img={placeholders[idx % placeholders.length]}>
             <div className="flex items-center justify-between">
               <div className="font-semibold text-slate-900 dark:text-white">{r.title}</div>
               <div className="text-xs text-slate-500">🔥 {r.popularity ?? 0}</div>
@@ -98,12 +108,17 @@ export function TrendingIngredients() {
   useEffect(() => {
     fetch(`${baseUrl}/ingredients/trending`).then(r=>r.json()).then(d=>setItems(Array.isArray(d)?d:[])).catch(()=>{})
   }, [])
+  const placeholders = [
+    'https://images.unsplash.com/photo-1512058564366-18510be2db19?q=80&w=1200&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1464965911861-746a04b4bca6?q=80&w=1200&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1478144592103-25e218a04891?q=80&w=1200&auto=format&fit=crop',
+  ]
   return (
     <section className="max-w-6xl mx-auto px-4 py-12">
       <h2 className="text-2xl font-semibold text-slate-900 dark:text-white">Popular ingredients</h2>
       <Grid>
-        {items.map((i) => (
-          <Card key={i.id}>
+        {items.map((i, idx) => (
+          <Card key={i.id} img={placeholders[idx % placeholders.length]}>
             <div className="flex items-center justify-between">
               <div className="font-semibold text-slate-900 dark:text-white">{i.name}</div>
               <div className="text-xs text-slate-500">⭐ {i.popularity ?? 0}</div>
@@ -151,12 +166,18 @@ export function RecommendationsOrCTA() {
     )
   }
 
+  const placeholders = [
+    'https://images.unsplash.com/photo-1551218808-94e220e084d2?q=80&w=1200&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1200&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1478144592103-25e218a04891?q=80&w=1200&auto=format&fit=crop',
+  ]
+
   return (
     <section className="max-w-6xl mx-auto px-4 py-12">
       <h2 className="text-2xl font-semibold text-slate-900 dark:text-white">Recommended for you</h2>
       <Grid>
-        {items.map((r)=> (
-          <Card key={r.id}>
+        {items.map((r, idx)=> (
+          <Card key={r.id} img={placeholders[idx % placeholders.length]}>
             <div className="flex items-center justify-between">
               <div className="font-semibold text-slate-900 dark:text-white">{r.title}</div>
               <div className="text-xs text-slate-500">👍 {(r.popularity ?? 0)}</div>
