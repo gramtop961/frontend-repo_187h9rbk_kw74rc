@@ -8,13 +8,21 @@ export function QuickLogin() {
   const [user, setUser] = useState(null)
   const [error, setError] = useState(null)
 
+  const persist = (data) => {
+    try {
+      localStorage.setItem('auth', JSON.stringify(data))
+      setUser(data)
+      window.dispatchEvent(new Event('auth-changed'))
+    } catch {}
+  }
+
   const register = async () => {
     setError(null)
     try {
       const res = await fetch(`${baseUrl}/auth/register`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password }) })
       const data = await res.json()
       if (!res.ok) throw new Error(data.detail || 'Register failed')
-      setUser(data)
+      persist(data)
     } catch (e) {
       setError(e.message)
     }
@@ -26,11 +34,18 @@ export function QuickLogin() {
       const res = await fetch(`${baseUrl}/auth/login`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password }) })
       const data = await res.json()
       if (!res.ok) throw new Error(data.detail || 'Login failed')
-      setUser(data)
+      persist(data)
     } catch (e) {
       setError(e.message)
     }
   }
+
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem('auth')
+      if (raw) setUser(JSON.parse(raw))
+    } catch {}
+  }, [])
 
   return (
     <section className="max-w-6xl mx-auto px-4 py-12">
