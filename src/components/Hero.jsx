@@ -28,8 +28,8 @@ export default function Hero() {
           </motion.p>
 
           <div className="mt-6 flex flex-wrap gap-3">
-            <a href="#recipes" className="px-4 py-2 rounded-md bg-slate-900 text-white dark:bg-white dark:text-slate-900 font-medium">Browse Recipes</a>
-            <a href="#ai" className="px-4 py-2 rounded-md border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200">Try AI Import</a>
+            <a href="/explore" className="px-4 py-2 rounded-md bg-slate-900 text-white dark:bg-white dark:text-slate-900 font-medium">Browse Recipes</a>
+            <a href="/ai" className="px-4 py-2 rounded-md border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200">Try AI Import</a>
           </div>
         </div>
 
